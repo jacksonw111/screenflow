@@ -75,7 +75,7 @@ class AccountService:
 
     async def authenticate(self, email: str, password: str) -> Account:
         account: Account = await self.get_account_by_email(email)
-        self.check_account_status(account=account)
+        await self.check_account_status(account=account)
 
         if account.status == AccountStatus.PENDING:
             account.status = AccountStatus.ACTIVE.value

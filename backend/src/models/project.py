@@ -69,6 +69,9 @@ class PageWithElement(BaseSQLModel, table=True):
         sa_column_kwargs={"server_default": text("gen_random_uuid()"), "unique": True},
     )
 
+    page_id: uuid.UUID
+    element_id: uuid.UUID
+
 
 class OperationType(str, enum.Enum):
     FOR = "for"

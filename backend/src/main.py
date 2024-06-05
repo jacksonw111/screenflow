@@ -18,6 +18,8 @@ from src.web.setup import api as setup_api_router
 from src.web.auth import api as auth_api_router
 from src.web.project import api as project_api_router
 from src.web.page import api as page_api_router
+from src.web.page_element import api as page_element_api_router
+from src.web.scenario import api as scenario_api_router
 
 app = FastAPI(openapi_url=None)
 
@@ -29,6 +31,14 @@ async def request_validate_error_handler(request: Request, exc: RequestValidatio
     return JSONResponse(
         content=jsonable_encoder({"detail": exc.errors(), "body": exc.body}),
         status_code=status.HTTP_400_BAD_REQUEST,
+    )
+
+
+@app.exception_handler(Exception)
+async def exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        content=jsonable_encoder({"detail": exc}),
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
     )
 
 
@@ -153,3 +163,5 @@ app.include_router(setup_api_router, tags=["setup"])
 app.include_router(auth_api_router, tags=["auth"])
 app.include_router(project_api_router, tags=["project"])
 app.include_router(page_api_router, tags=["page"])
+app.include_router(scenario_api_router, tags=["scenario"])
+app.include_router(page_element_api_router, tags=["page_element"])
